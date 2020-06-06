@@ -2,6 +2,7 @@ import { Repository, DeleteQueryBuilder, SelectQueryBuilder, UpdateQueryBuilder,
 import { IRepository, IFilter } from "./irepository"
 import { IMapper, TypeIdentifier } from "../mapper"
 import { newCustomError } from "@/sanityjs";
+import { NoRemoveQueryFound, NoMatchingResult, NoUpdateQueryFound, NoFindQueryFound } from "./errors";
 
 export type FilterBuilder<TBuilder> = (query: IFilter, builder: TBuilder) => TBuilder;
 export type UpdateFilterBuilder<TBuilder, TEntity> = (query: IFilter, entity: TEntity, builder: TBuilder) => TBuilder;
@@ -42,7 +43,7 @@ export abstract class TableRepository<TDomain, TEntity> implements IRepository<T
         const invokeBuilder = this.deleteFilters.get(filter.discriminator);
 
         if (invokeBuilder === undefined) {
-            throw newCustomError('NoRemoveQueryFound', `Not query found for id ${filter.discriminator}`)
+            throw NoRemoveQueryFound.create(`Not query found for id ${filter.discriminator}`)
         }
 
         let deleteQueryBuilder = getRepository(this.entity).createQueryBuilder().delete().from(this.entity);
@@ -56,7 +57,7 @@ export abstract class TableRepository<TDomain, TEntity> implements IRepository<T
         const result = await findQueryBuilder.getOne()
 
         if (result === undefined) {
-            throw newCustomError('NoMatchingResult', `Not result found for query ${findQueryBuilder.getSql()}`)
+            throw NoMatchingResult.create(`Not result found for query ${findQueryBuilder.getSql()}`)
         }
 
         const mappedResult = this.mapper.map<TEntity, TDomain>(result, this.entity, this.domain)
@@ -67,7 +68,7 @@ export abstract class TableRepository<TDomain, TEntity> implements IRepository<T
         const invokeBuilder = this.updateFilters.get(filter.discriminator);
 
         if (invokeBuilder === undefined) {
-            throw new Error()
+            throw NoUpdateQueryFound.create(`Not query found for id ${filter.discriminator}`, { discriminator: filter.discriminator })
         }
 
         const entity = this.mapper.map<Partial<TDomain>, TEntity>(newDomain, this.entity, this.domain)
@@ -94,7 +95,7 @@ export abstract class TableRepository<TDomain, TEntity> implements IRepository<T
         const invokeBuilder = this.queryFilters.get(filter.discriminator);
 
         if (invokeBuilder === undefined) {
-            throw newCustomError('NoFindQueryFound', `Not query found for id ${filter.discriminator}`)
+            throw NoFindQueryFound.create(`Not query found for id ${filter.discriminator}`)
         }
 
         let findQueryBuilder = getRepository(this.entity).createQueryBuilder();

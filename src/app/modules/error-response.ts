@@ -1,9 +1,11 @@
 import { ContainerModule, interfaces } from "inversify";
 import { KnownErrorResponse } from "@/sanityjs/http_handlers";
 import { ValidationError } from '../../sanityjs/http_handlers/errors/validation-error';
+import { NoMatchingResult } from "@/sanityjs";
 
 const knownErrorResponse = new KnownErrorResponse()
     .addTemplate(ValidationError, (res, error) => res.status(400).json(error.errors))
+    .add(NoMatchingResult.name, (res) => res.sendStatus(404))
     .setDefaultHandler((res, error, logger) => {
         res.status(500).json({ status: '500', message: 'Internal server error' })
         logger.error({

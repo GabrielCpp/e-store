@@ -74,4 +74,14 @@ describe('API', () => {
         let res = await promisified(action);
         console.log(res.body)
     })
+
+    test('find unkown user', async () => {
+        const id = uuidv4();
+        let action: AsyncAction<request.Response> = handler => supertest
+            .get(`/user/${id}`)
+            .expect(404)
+            .end(handler)
+
+        await promisified(action);
+    })
 })

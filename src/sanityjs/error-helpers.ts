@@ -17,3 +17,16 @@ export function buildErrorTemplate<Parameters extends object>(name: string, mess
         create: (parameters: Parameters) => newCustomError(name, message, parameters) as Error & Parameters
     }
 }
+
+
+export interface IDynamicError {
+    name: string;
+    create: (message: string, parameters?: object) => Error
+}
+
+export function buildDynamicErrorTemplate(name: string): IDynamicError {
+    return {
+        name,
+        create: (message: string, parameters: object = {}) => newCustomError(name, message, parameters)
+    }
+}
