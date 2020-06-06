@@ -1,14 +1,11 @@
 import './controllers'
 import * as bodyParser from 'body-parser';
-import * as appMappers from './mappings'
-import * as infraMappers from '@/infrastructure/mappings'
+import * as modules from './modules';
 import * as entities from '@/infrastructure/entities'
 import { Application as ExpressApplication } from 'express'
 import { createServer } from 'http'
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
-import { MAPPER, IMapper, Mapper } from '@/sanityjs/mapper';
-import * as modules from './modules';
 import { createConnections, Connection } from 'typeorm';
 import { noop } from 'lodash'
 import { CONTAINER } from './types';
@@ -24,7 +21,6 @@ export class Application {
 
     public async build(): Promise<ExpressApplication> {
         let container = new Container();
-        container.bind<IMapper>(MAPPER).toConstantValue(this.buildMapper());
         container.bind<Container>(CONTAINER).toConstantValue(container)
         container.load(...Object.values(modules))
 
@@ -71,13 +67,5 @@ export class Application {
                 ]
             } as any
         ])
-    }
-
-    private buildMapper(): IMapper {
-        const mapper = new Mapper();
-        mapper.addMappers(...Object.values(appMappers))
-        mapper.addMappers(...Object.values(infraMappers))
-
-        return mapper;
     }
 }
