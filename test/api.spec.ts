@@ -57,4 +57,21 @@ describe('API', () => {
         res = await promisified(action);
         expect(res.body).toEqual(userDto)
     })
+
+    test('create invalid user', async () => {
+        const userDto = {
+            'name': 'test',
+            'email': 'test@gmail.com'
+        }
+
+        let action: AsyncAction<request.Response> = handler => supertest
+            .post('/user')
+            .send(userDto)
+            .set('Accept', 'application/json')
+            .expect(400)
+            .end(handler)
+
+        let res = await promisified(action);
+        console.log(res.body)
+    })
 })

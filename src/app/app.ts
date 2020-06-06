@@ -8,9 +8,10 @@ import { createServer } from 'http'
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { MAPPER, IMapper, Mapper } from '@/sanityjs/mapper';
-import { userModule, commonModule } from './modules';
+import * as modules from './modules';
 import { createConnections, Connection } from 'typeorm';
 import { noop } from 'lodash'
+import { CONTAINER } from './types';
 
 export class Application {
     private expressClose: () => void = noop;
@@ -24,7 +25,8 @@ export class Application {
     public async build(): Promise<ExpressApplication> {
         let container = new Container();
         container.bind<IMapper>(MAPPER).toConstantValue(this.buildMapper());
-        container.load(commonModule, userModule)
+        container.bind<Container>(CONTAINER).toConstantValue(container)
+        container.load(...Object.values(modules))
 
         let server = new InversifyExpressServer(container);
         server.setConfig(this.configure.bind(this));

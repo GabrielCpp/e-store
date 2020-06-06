@@ -57,7 +57,6 @@ export class CommandResponseHandlerFactory<Domain> {
                 this.responseBuilder.serializeJson(res, resultModel)
             }
             catch (e) {
-                console.error(e)
                 this.responseBuilder.buildFromError(res, e);
             }
         }

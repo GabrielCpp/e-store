@@ -1,7 +1,7 @@
 import { Repository, DeleteQueryBuilder, SelectQueryBuilder, UpdateQueryBuilder, ObjectType, getRepository } from "typeorm"
 import { IRepository, IFilter } from "./irepository"
 import { IMapper, TypeIdentifier } from "../mapper"
-import { newCustomError } from "../error";
+import { newCustomError } from "@/sanityjs";
 
 export type FilterBuilder<TBuilder> = (query: IFilter, builder: TBuilder) => TBuilder;
 export type UpdateFilterBuilder<TBuilder, TEntity> = (query: IFilter, entity: TEntity, builder: TBuilder) => TBuilder;

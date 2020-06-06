@@ -23,7 +23,6 @@ export class UserRessourceHandler {
     private getByIdHandler: HandlerType<QueryUserByIdDto>
     private createUserHandler: HandlerType<UserDto>
 
-
     public constructor(
         @inject(USER_RESSOURCE_USECASE) private usecase: UserRessourceUsecase,
         @inject(RESPONSE_BUILDER) private responseBuilder: IResponseBuilder,
@@ -51,7 +50,6 @@ export class UserRessourceHandler {
 
     public async getById(req: Request, res: Response): Promise<void> {
         const model = { id: req.params.id };
-
         await this.getByIdHandler(res, model)
     }
 
