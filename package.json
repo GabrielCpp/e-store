@@ -1,0 +1,62 @@
+{
+    "name": "@thayl/docker-worker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist/**/*"
+    ],
+    "scripts": {
+        "test": "jest --config jest.config.js --runInBand --no-cache",
+        "build:dev": "yarn run clean && tsc-watch --onSuccess \"node ./dist/index.js\"",
+        "build": "yarn run clean && node_modules/.bin/tsc",
+        "clean": "rimraf dist",
+        "prepare": "yarn run build",
+        "start": "node dist/index.js"
+    },
+    "_moduleAliases": {
+        "@": "./dist"
+    },
+    "author": "",
+    "license": "ISC",
+    "peerDependencies": {},
+    "devDependencies": {
+        "@types/dotenv": "^8.2.0",
+        "@types/express": "^4.17.6",
+        "@types/jest": "^24.0.17",
+        "@types/lodash": "^4.14.155",
+        "@types/node": "^12.6.8",
+        "@types/supertest": "^2.0.9",
+        "@types/uuid": "^8.0.0",
+        "@typescript-eslint/eslint-plugin": "^1.13.0",
+        "@typescript-eslint/parser": "^1.13.0",
+        "bufferutil": "^4.0.1",
+        "canvas": "^2.5.0",
+        "eslint": "5.0.1",
+        "eslint-plugin-jest": "^22.13.6",
+        "eslint-plugin-prettier": "^3.1.0",
+        "jest": "^26.0.1",
+        "prettier": "^2.0.5",
+        "rimraf": "^3.0.0",
+        "sqlite3": "^4.2.0",
+        "supertest": "^4.0.2",
+        "ts-jest": "^26.0.0",
+        "ts-node": "^8.10.2",
+        "tsc-watch": "^4.2.3",
+        "typescript": "^3.6.2",
+        "utf-8-validate": "^5.0.2"
+    },
+    "dependencies": {
+        "ajv": "^6.12.2",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "inversify": "^5.0.1",
+        "inversify-express-utils": "^6.3.2",
+        "lodash": "^4.17.15",
+        "module-alias": "^2.2.2",
+        "mysql": "^2.18.1",
+        "typeorm": "^0.2.25",
+        "uuid": "^8.1.0"
+    }
+}
