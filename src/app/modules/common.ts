@@ -2,8 +2,9 @@ import { ContainerModule, decorate, injectable, interfaces, inject } from "inver
 import { TableRepository } from "@/sanityjs/repository-flavours";
 import { Repository } from "typeorm";
 import { IResponseBuilder, RESPONSE_BUILDER } from '@/sanityjs/http_handlers/iresponse-builder';
-import { ResponseBuilder, KnownErrorResponse } from '../../sanityjs/http_handlers/response-builder';
-import { BaseValidator } from "@/sanityjs/http_handlers";
+import { ResponseBuilder } from '../../sanityjs/http_handlers/response-builder';
+import { BaseValidator, KnownErrorResponse } from "@/sanityjs/http_handlers";
+import { LOGGER } from "@/sanityjs/logging/ilogger";
 
 function bindConstructor(Class: any, parameters: any[]) {
     const x = injectable()(Class)
@@ -16,5 +17,5 @@ export const commonModule = new ContainerModule((bind: interfaces.Bind, unbind: 
     decorate(injectable(), TableRepository)
     decorate(injectable(), Repository)
     decorate(injectable(), BaseValidator)
-    bind<IResponseBuilder>(RESPONSE_BUILDER).to(bindConstructor(ResponseBuilder, [KnownErrorResponse]))
+    bind<IResponseBuilder>(RESPONSE_BUILDER).to(bindConstructor(ResponseBuilder, [LOGGER, KnownErrorResponse]))
 });
