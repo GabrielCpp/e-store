@@ -1,4 +1,4 @@
-import { Application } from '@/app/app'
+import { Application } from '@/app'
 import request from 'supertest'
 import { Application as ExpressApplication } from 'express'
 import { v4 as uuidv4 } from 'uuid';
