@@ -2,8 +2,9 @@ import { controller, httpGet, httpPost, BaseHttpController, request, response } 
 import { Request, Response } from "express";
 import { inject } from "inversify";
 import { UserRessourceHandler, USER_RESSOURCE_HANDLER } from "../handlers";
+import { JwtDecoderMiddleware } from "../middlewares";
 
-@controller("/user")
+@controller("/user", JwtDecoderMiddleware)
 export class UserController extends BaseHttpController {
     @inject(USER_RESSOURCE_HANDLER) private userHandler: UserRessourceHandler
 
@@ -16,5 +17,4 @@ export class UserController extends BaseHttpController {
     public async create(@request() req: Request, @response() res: Response): Promise<void> {
         await this.userHandler.create(req, res)
     }
-
 }

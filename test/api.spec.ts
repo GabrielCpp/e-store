@@ -40,7 +40,7 @@ describe('API', () => {
         }
 
         let action: AsyncAction<request.Response> = handler => supertest
-            .post('/user')
+            .post('/api/user')
             .send(userDto)
             .set('Accept', 'application/json')
             .expect(200)
@@ -50,7 +50,7 @@ describe('API', () => {
         expect(res.body).toEqual(userDto)
 
         action = handler => supertest
-            .get(`/user/${userDto.id}`)
+            .get(`/api/user/${userDto.id}`)
             .expect(200)
             .end(handler)
 
@@ -65,20 +65,19 @@ describe('API', () => {
         }
 
         let action: AsyncAction<request.Response> = handler => supertest
-            .post('/user')
+            .post('/api/user')
             .send(userDto)
             .set('Accept', 'application/json')
             .expect(400)
             .end(handler)
 
         let res = await promisified(action);
-        console.log(res.body)
     })
 
     test('find unkown user', async () => {
         const id = uuidv4();
         let action: AsyncAction<request.Response> = handler => supertest
-            .get(`/user/${id}`)
+            .get(`/api/user/${id}`)
             .expect(404)
             .end(handler)
 

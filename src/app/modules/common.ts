@@ -5,17 +5,11 @@ import { IResponseBuilder, RESPONSE_BUILDER } from '@/sanityjs/http_handlers/ire
 import { ResponseBuilder } from '../../sanityjs/http_handlers/response-builder';
 import { BaseValidator, KnownErrorResponse } from "@/sanityjs/http_handlers";
 import { LOGGER } from "@/sanityjs/logging/ilogger";
-
-function bindConstructor(Class: any, parameters: any[]) {
-    const x = injectable()(Class)
-    parameters.forEach((p, i) => inject(p)(Class, undefined as any, i))
-    return x
-}
-
+import { bindInjectable } from "@/sanityjs/inversify-injectable";
 
 export const commonModule = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     decorate(injectable(), TableRepository)
     decorate(injectable(), Repository)
     decorate(injectable(), BaseValidator)
-    bind<IResponseBuilder>(RESPONSE_BUILDER).to(bindConstructor(ResponseBuilder, [LOGGER, KnownErrorResponse]))
+    bind<IResponseBuilder>(RESPONSE_BUILDER).to(bindInjectable(ResponseBuilder, [LOGGER, KnownErrorResponse]))
 });

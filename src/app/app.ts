@@ -24,7 +24,7 @@ export class Application {
         container.bind<Container>(CONTAINER).toConstantValue(container)
         container.load(...Object.values(modules))
 
-        let server = new InversifyExpressServer(container);
+        let server = new InversifyExpressServer(container, null, { rootPath: "/api" });
         server.setConfig(this.configure.bind(this));
 
         this.connections = await this.buildConnections()
