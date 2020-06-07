@@ -1,8 +1,7 @@
 import { ContainerModule, interfaces } from "inversify";
 import { JwtDecoderMiddleware } from "../middlewares";
-import { JWT_CERTIFICATE, JWT_CERTIFICATE_KEY, JwtEncoder, IJwtEncoder, JWT_ENCODER, USER_PROVIDER, UserProvider } from "@/sanityjs/jwt-token-auth";
+import { JWT_CERTIFICATE, JWT_CERTIFICATE_KEY, JwtEncoder, IJwtEncoder, JWT_ENCODER, USER_PROVIDER, UserProvider, IUserProvider } from "@/sanityjs/jwt-token-auth";
 import { bindInjectable } from "@/sanityjs/inversify-injectable";
-import { IUserProvider } from '../../../dist/app/middlewares/jwt-auth-middleware.d';
 
 
 export const middlewareModule = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
