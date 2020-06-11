@@ -7,7 +7,7 @@ export interface UserPrincipal {
 export const USER_PROVIDER = Symbol.for('UserProvider')
 
 export interface IUserProvider {
-    user: UserPrincipal
+    readonly user: UserPrincipal
 }
 
 export class UserProvider implements IUserProvider {

@@ -17,4 +17,8 @@ export class ResponseBuilder implements IResponseBuilder {
     public serializeJson(res: Response, obj: unknown): void {
         res.json(obj)
     }
+
+    public sendSuccess(res: Response): void {
+        res.sendStatus(200)
+    }
 }

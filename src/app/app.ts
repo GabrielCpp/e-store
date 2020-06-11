@@ -13,6 +13,7 @@ import { CONTAINER } from './types';
 export class Application {
     private expressClose: () => void = noop;
     private connections: Connection[] = []
+    public container = new Container();
 
     public async close() {
         this.expressClose()
@@ -20,11 +21,10 @@ export class Application {
     }
 
     public async build(): Promise<ExpressApplication> {
-        let container = new Container();
-        container.bind<Container>(CONTAINER).toConstantValue(container)
-        container.load(...Object.values(modules))
+        this.container.bind<Container>(CONTAINER).toConstantValue(this.container)
+        this.container.load(...Object.values(modules))
 
-        let server = new InversifyExpressServer(container, null, { rootPath: "/api" });
+        let server = new InversifyExpressServer(this.container, null, { rootPath: "/api" });
         server.setConfig(this.configure.bind(this));
 
         this.connections = await this.buildConnections()

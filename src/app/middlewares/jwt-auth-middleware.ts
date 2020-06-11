@@ -1,52 +1,89 @@
-import jwt, { VerifyErrors } from 'jsonwebtoken'
 import express from 'express'
 import { BaseMiddleware } from "inversify-express-utils";
-import { inject, injectable } from 'inversify';
+import { inject, injectable, Container } from 'inversify';
 import { Dictionary } from '../../sanityjs/type-utils';
-import { USER_PROVIDER, JWT_CERTIFICATE, IUserProvider } from '@/sanityjs/jwt-token-auth';
+import { USER_PROVIDER, IUserProvider, JWT_DECODER, IJwtDecoder, UserPrincipal } from '@/sanityjs/jwt-token-auth';
+import { IResponseBuilder, RESPONSE_BUILDER } from '@/sanityjs';
+import { CONTAINER } from '../types';
 
+interface TokenPayload {
+    id: string;
+    permissions: string[]
+}
+
+class AuthenticatedUserPrincipal implements UserPrincipal {
+    public id: string;
+
+    public constructor(private tokenPayload: TokenPayload) {
+        this.id = tokenPayload.id;
+    }
+
+    public isAuthenticated(): Promise<boolean> {
+        return Promise.resolve(true)
+    }
+
+    public hasPermission(...permissions: string[]): Promise<boolean> {
+        let granted = true;
+
+        for (const permission of permissions) {
+            if (!this.tokenPayload.permissions.includes(permission)) {
+                granted = false;
+                break;
+            }
+        }
+
+        return Promise.resolve(granted)
+    }
+}
+
+const unauthorizedUser: UserPrincipal = {
+    id: null,
+    isAuthenticated() {
+        return Promise.resolve(false)
+    },
+    hasPermission(...permissions: string[]) {
+        return Promise.resolve(false)
+    },
+}
 
 @injectable()
 export class JwtDecoderMiddleware extends BaseMiddleware {
-    @inject(USER_PROVIDER) private userProvider: IUserProvider;
-    @inject(JWT_CERTIFICATE) private cert: string;
+    @inject(JWT_DECODER) private jwtDecoder: IJwtDecoder;
+    @inject(RESPONSE_BUILDER) private responseBuilder: IResponseBuilder;
 
-    public handler(
+    public async handler(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
-    ) {
-        if (req.headers.authorization !== undefined) {
-            const token = req.headers.authorization;
-            jwt.verify(token, this.cert, (err: VerifyErrors | null, decoded: object | undefined) => {
-                if (err) {
-                    this.userProvider.user = {
-                        id: null,
-                        isAuthenticated() {
-                            return Promise.resolve(false)
-                        },
-                        hasPermission(...permissions: string[]) {
-                            return Promise.resolve(false)
-                        },
-                    }
-                }
-                else if (decoded !== undefined) {
-                    this.userProvider.user = {
-                        id: (decoded as Dictionary<string>).id,
-                        isAuthenticated() {
-                            return Promise.resolve(true)
-                        },
-                        hasPermission(...permissions: string[]) {
-                            return Promise.resolve(false)
-                        },
-                    }
-                }
+    ): Promise<void> {
+        const httpContext = this.httpContext;
+        let user: UserPrincipal = unauthorizedUser;
 
-                next();
-            });
+        if (req.headers.authorization === undefined) {
+            httpContext.container.bind<IUserProvider>(USER_PROVIDER).toConstantValue({ user })
+            next();
+            return
+        }
+
+        let token = req.headers.authorization;
+
+        if (token.startsWith('Bearer')) {
+            token = token.substring(7)
         }
         else {
+            this.responseBuilder.buildFromError(res, new Error())
+            return;
+        }
+
+        try {
+            const decoded = await this.jwtDecoder.verify(token) as TokenPayload;
+            user = new AuthenticatedUserPrincipal(decoded);
+            httpContext.container.bind<IUserProvider>(USER_PROVIDER).toConstantValue({ user })
             next();
+        }
+        catch (e) {
+            this.responseBuilder.buildFromError(res, e)
         }
     }
 }
+

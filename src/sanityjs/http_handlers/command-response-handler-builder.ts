@@ -7,11 +7,16 @@ import { Dictionary } from "../type-utils";
 
 export type HandlerType<Dto> = (res: Response, model: Dto) => Promise<void>
 
+interface IdentifierMapping {
+    from: TypeIdentifier;
+    to: TypeIdentifier
+}
+
 export class CommandResponseHandlerFactory<Domain> {
     private validator: IModelValidator;
     private invokeUsecase: (domain: Domain) => unknown
-    private inputMapping: { from: TypeIdentifier, to: TypeIdentifier }
-    private resultMapping: { from: TypeIdentifier, to: TypeIdentifier }
+    private inputMapping: IdentifierMapping
+    private resultMapping: IdentifierMapping | undefined = undefined
 
     public static from<TDomain>(
         mapper: IMapper,
@@ -48,13 +53,40 @@ export class CommandResponseHandlerFactory<Domain> {
     }
 
     public build<Dto extends object>(): HandlerType<Dto> {
+        if (this.resultMapping === undefined) {
+            return this.commandHandler<Dto>()
+        }
+
+        return this.commandAndResponseHandler<Dto>()
+    }
+
+    private commandAndResponseHandler<Dto extends object>(): HandlerType<Dto> {
+        const inputMapping = this.inputMapping as IdentifierMapping;
+        const resultMapping = this.resultMapping as IdentifierMapping
+
         return async (res: Response, model: Dto): Promise<void> => {
             try {
                 this.validator.validate(model as Dictionary<unknown>)
-                const domain = this.mapper.map<Dto, Domain>(model, this.inputMapping.from, this.inputMapping.to)
+                const domain = this.mapper.map<Dto, Domain>(model, inputMapping.from, inputMapping.to)
                 const resultDomain = await this.invokeUsecase(domain)
-                const resultModel = this.mapper.map(resultDomain, this.resultMapping.from, this.resultMapping.to)
+                const resultModel = this.mapper.map(resultDomain, resultMapping.from, resultMapping.to)
                 this.responseBuilder.serializeJson(res, resultModel)
+            }
+            catch (e) {
+                this.responseBuilder.buildFromError(res, e)
+            }
+        }
+    }
+
+    private commandHandler<Dto extends object>(): HandlerType<Dto> {
+        const inputMapping = this.inputMapping as IdentifierMapping;
+
+        return async (res: Response, model: Dto): Promise<void> => {
+            try {
+                this.validator.validate(model as Dictionary<unknown>)
+                const domain = this.mapper.map<Dto, Domain>(model, inputMapping.from, inputMapping.to)
+                await this.invokeUsecase(domain)
+                this.responseBuilder.sendSuccess(res)
             }
             catch (e) {
                 this.responseBuilder.buildFromError(res, e)
