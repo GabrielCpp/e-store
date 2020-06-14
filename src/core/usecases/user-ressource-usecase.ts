@@ -11,8 +11,12 @@ export class UserRessourceUsecase {
     @inject(USER_REPOSITORY) private userRepository: IUserRepository
     @inject(USER_PRINCIPAL_GUARD) private userPrincipalGuard: IUserPrincipalGuard;
 
-    public async getById(userId: QueryUserByIdDomain): Promise<UserDomain> {
-        return await this.userRepository.findOneBy(userId);
+    public async getById(queryUserById: QueryUserByIdDomain): Promise<UserDomain> {
+        if (this.userPrincipalGuard.userId !== queryUserById.id) {
+            await this.userPrincipalGuard.requirePermissions('user.search')
+        }
+
+        return await this.userRepository.findOneBy(queryUserById);
     }
 
     public async create(user: UserDomain): Promise<UserDomain> {

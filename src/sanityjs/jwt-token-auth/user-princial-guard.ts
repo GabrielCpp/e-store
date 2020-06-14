@@ -16,11 +16,16 @@ export const USER_PRINCIPAL_GUARD = Symbol.for('UserPrincipalGuard')
 export interface IUserPrincipalGuard {
     requireAuthentificated(): Promise<void>
     requirePermissions(...permissions: string[]): Promise<void>
+    userId: string;
 }
 
 export class UserPrincipalGuard {
     public constructor(private userProvider: UserProvider) {
 
+    }
+
+    public get userId() {
+        return this.userProvider.user.id
     }
 
     public async requireAuthentificated(): Promise<void> {

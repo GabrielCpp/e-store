@@ -2,8 +2,9 @@ import './controllers'
 import * as bodyParser from 'body-parser';
 import * as modules from './modules';
 import * as entities from '@/infrastructure/entities'
-import { Application as ExpressApplication } from 'express'
-import { createServer } from 'http'
+import * as swagger from 'swagger-express-ts';
+import express, { Application as ExpressApplication } from 'express'
+import { createServer, Server } from 'http'
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { createConnections, Connection } from 'typeorm';
@@ -32,7 +33,7 @@ export class Application {
         return server.build();
     }
 
-    public async start(): Promise<ExpressApplication> {
+    public async start(): Promise<Server> {
         const app: ExpressApplication = await this.build()
         const server = createServer(app)
 
@@ -40,10 +41,31 @@ export class Application {
             this.expressClose = () => server.close()
         });
 
-        return app;
+        return server;
     }
 
     private configure(app: ExpressApplication): void {
+        app.use('/api-docs/swagger', express.static('swagger'));
+        app.use(
+            '/api-docs/swagger/assets',
+            express.static('node_modules/swagger-ui-dist')
+        );
+
+        app.use(
+            swagger.express({
+                definition: {
+                    basePath: '/api',
+                    info: {
+                        title: 'e-store',
+                        version: '1.0',
+                    },
+                    responses: {
+                        500: {},
+                    },
+                },
+            })
+        );
+
         app.use(bodyParser.urlencoded({
             extended: true
         }));
