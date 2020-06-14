@@ -13,7 +13,8 @@
         "build": "yarn run clean && node_modules/.bin/tsc",
         "clean": "rimraf dist",
         "prepare": "yarn run build",
-        "start": "node dist/index.js"
+        "start": "node dist/index.js",
+        "generate:env": "node ./generate-local-config.js"
     },
     "_moduleAliases": {
         "@": "./dist"

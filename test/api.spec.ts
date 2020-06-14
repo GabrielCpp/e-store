@@ -5,21 +5,28 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosResponse }
 import { AddressInfo, Server } from 'net';
 import https from 'https'
 
-function makeAxiosTest(axiosInstance: AxiosInstance, server: Server) {
+function makeAxiosTest(axiosInstance: AxiosInstance, server: Server, httpsCaCertificate?: string) {
     const addr = server.address() as AddressInfo
     const port = addr.port;
     const protocol = server instanceof https.Server ? 'https' : 'http';
-    const baseUrl = protocol + '://' + '127.0.0.1' + ':' + port
+    const baseUrl = protocol + '://' + 'localhost' + ':' + port
+    const httpsAgent = httpsCaCertificate ? new https.Agent({ ca: Buffer.from(httpsCaCertificate, 'base64').toString(), keepAlive: false }) : undefined;
 
     return async (config: AxiosRequestConfig): Promise<AxiosResponse<any>> => {
         try {
             return await axiosInstance({
                 ...config,
-                url: baseUrl + config.url
+                url: baseUrl + config.url,
+                httpsAgent
             })
         }
         catch (e) {
-            return e.response
+            if (e.response) {
+                return e.response
+            }
+            else {
+                throw e;
+            }
         }
     }
 }
@@ -44,7 +51,7 @@ describe('API', () => {
         app = new Application()
         server = await app.start()
         jwtEncoder = app.container.get(JWT_ENCODER)
-        axiostest = makeAxiosTest(axios, server);
+        axiostest = makeAxiosTest(axios, server, process.env.TEST_CA_CERTIFICATE as string);
     })
 
     afterAll(() => {

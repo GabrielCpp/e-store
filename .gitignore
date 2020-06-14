@@ -85,3 +85,6 @@ typings/
 
 # app
 dist/
+
+
+.local-cfg

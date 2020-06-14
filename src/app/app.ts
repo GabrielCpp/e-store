@@ -4,17 +4,34 @@ import * as modules from './modules';
 import * as entities from '@/infrastructure/entities'
 import * as swagger from 'swagger-express-ts';
 import express, { Application as ExpressApplication } from 'express'
-import { createServer, Server } from 'http'
+import { createServer, Server } from 'https'
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { createConnections, Connection } from 'typeorm';
 import { noop } from 'lodash'
 import { CONTAINER } from './types';
 
+interface ExpressConfig {
+    port: number;
+    tlsPrivateKey: string;
+    tlsCertificate: string;
+    passphrase: string;
+}
+
 export class Application {
     private expressClose: () => void = noop;
     private connections: Connection[] = []
     public container = new Container();
+    private expressConfig: ExpressConfig
+
+    public constructor() {
+        this.expressConfig = {
+            port: parseInt(process.env.EXPRESS_PORT as string),
+            tlsPrivateKey: Buffer.from(process.env.EXPRESS_TLS_PRIVATE_KEY as string, 'base64').toString('ascii'),
+            tlsCertificate: Buffer.from(process.env.EXPRESS_TLS_CERTIFICATE as string, 'base64').toString('ascii'),
+            passphrase: process.env.EXPRESS_TLS_PASSPHRASE as string
+        }
+    }
 
     public async close() {
         this.expressClose()
@@ -35,9 +52,9 @@ export class Application {
 
     public async start(): Promise<Server> {
         const app: ExpressApplication = await this.build()
-        const server = createServer(app)
+        const server = createServer({ key: this.expressConfig.tlsPrivateKey, cert: this.expressConfig.tlsCertificate, passphrase: this.expressConfig.passphrase }, app)
 
-        server.listen(3000, () => {
+        server.listen(this.expressConfig.port, () => {
             this.expressClose = () => server.close()
         });
 
