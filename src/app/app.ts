@@ -10,6 +10,7 @@ import { InversifyExpressServer } from 'inversify-express-utils';
 import { createConnections, Connection } from 'typeorm';
 import { noop } from 'lodash'
 import { CONTAINER } from './types';
+import { logger } from './logger'
 
 interface ExpressConfig {
     port: number;
@@ -55,6 +56,7 @@ export class Application {
         const server = createServer({ key: this.expressConfig.tlsPrivateKey, cert: this.expressConfig.tlsCertificate, passphrase: this.expressConfig.passphrase }, app)
 
         server.listen(this.expressConfig.port, () => {
+            logger.info(`Server started on port ${this.expressConfig.port}`)
             this.expressClose = () => server.close()
         });
 
