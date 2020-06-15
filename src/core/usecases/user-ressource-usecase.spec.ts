@@ -3,20 +3,20 @@ import { USER_RESSOURCE_USECASE, UserRessourceUsecase } from './user-ressource-u
 import { IUserRepository, USER_REPOSITORY } from '../repositories/iuser-repository';
 import { USER_PRINCIPAL_GUARD, IUserPrincipalGuard } from '../../sanityjs/jwt-token-auth/user-princial-guard';
 import { UserDomain } from '../domains';
-import { ClassMock } from '@/test-helpers'
+import { Mock } from 'moq.ts'
 
 describe('UserRessourceUsecase', () => {
     let container: Container;
     let usecase: UserRessourceUsecase;
-    let userPrincipalGuard: ClassMock<IUserPrincipalGuard>
-    let userRepository: ClassMock<IUserRepository>
+    let userPrincipalGuard: Mock<IUserPrincipalGuard>
+    let userRepository: Mock<IUserRepository>
 
     beforeEach(() => {
-        userPrincipalGuard = new ClassMock<IUserPrincipalGuard>()
-        userRepository = new ClassMock<IUserRepository>()
+        userPrincipalGuard = new Mock<IUserPrincipalGuard>()
+        userRepository = new Mock<IUserRepository>()
         container = new Container();
-        container.bind<IUserPrincipalGuard>(USER_PRINCIPAL_GUARD).toConstantValue(userPrincipalGuard.object)
-        container.bind<IUserRepository>(USER_REPOSITORY).toConstantValue(userRepository.object)
+        container.bind<IUserPrincipalGuard>(USER_PRINCIPAL_GUARD).toConstantValue(userPrincipalGuard.object())
+        container.bind<IUserRepository>(USER_REPOSITORY).toConstantValue(userRepository.object())
         container.bind<UserRessourceUsecase>(USER_RESSOURCE_USECASE).to(UserRessourceUsecase)
         usecase = container.get(USER_RESSOURCE_USECASE)
     })
@@ -28,8 +28,8 @@ describe('UserRessourceUsecase', () => {
             name: 'test'
         }
 
-        userPrincipalGuard.setup(x => x.requirePermissions('user.create'))
-        userRepository.setup(x => x.add(userDomain))
+        userPrincipalGuard.setup(x => x.requirePermissions('user.create')).returns(Promise.resolve(undefined))
+        userRepository.setup(x => x.add(userDomain)).returns(Promise.resolve(undefined))
 
         const actualCreatedUser = await usecase.create(userDomain)
         expect(actualCreatedUser).toEqual(userDomain)

@@ -3844,6 +3844,13 @@ module-alias@^2.2.2:
   resolved "https://registry.yarnpkg.com/module-alias/-/module-alias-2.2.2.tgz#151cdcecc24e25739ff0aa6e51e1c5716974c0e0"
   integrity sha512-A/78XjoX2EmNvppVWEhM2oGk3x4lLxnkEA4jTbaK97QKSDjkIoOsKQlfylt/d3kKKi596Qy3NP5XrXJ6fZIC9Q==
 
+moq.ts@^6.3.3:
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/moq.ts/-/moq.ts-6.3.3.tgz#6f917c07f14cb5bcb27d94c2d8effcbeeb81474e"
+  integrity sha512-ShbMllYH7cOJ3+6XHyS5yv8T00MPMzFxWbqKLAie7/kBFEciE6x19ibgYKZysN0PTd6kCuc0RyebdaGinORTRQ==
+  dependencies:
+    tslib "^1.10.0"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -5532,7 +5539,7 @@ tsc-watch@^4.2.3:
     string-argv "^0.1.1"
     strip-ansi "^4.0.0"
 
-tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
