@@ -1,7 +1,7 @@
 import { Container } from 'inversify'
 import { USER_RESSOURCE_USECASE, UserRessourceUsecase } from './user-ressource-usecase'
 import { IUserRepository, USER_REPOSITORY } from '../repositories/iuser-repository';
-import { USER_PRINCIPAL_GUARD, IUserPrincipalGuard } from '../../sanityjs/jwt-token-auth/user-princial-guard';
+import { USER_PRINCIPAL_GUARD, IUserPrincipalGuard } from '../../shared/jwt-token-auth/user-princial-guard';
 import { UserDomain } from '../domains';
 import { Mock } from 'moq.ts'
 

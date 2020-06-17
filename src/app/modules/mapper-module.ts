@@ -1,5 +1,5 @@
 import { ContainerModule, interfaces } from "inversify";
-import { IMapper, MAPPER, Mapper } from "@/sanityjs";
+import { IMapper, MAPPER, Mapper } from "@/shared";
 import * as appMappers from '@/app/mappings'
 import * as infraMappers from '@/infrastructure/mappings'
 

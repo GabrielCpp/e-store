@@ -1,5 +1,5 @@
 import { Application } from '@/app'
-import { JWT_ENCODER, IJwtEncoder } from '@/sanityjs'
+import { JWT_ENCODER, IJwtEncoder } from '@/shared'
 import { v4 as uuidv4 } from 'uuid';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosResponse } from 'axios'
 import { AddressInfo, Server } from 'net';

@@ -1,7 +1,7 @@
 
 import { Response } from 'express';
 import { IErrorTemplate } from '../error-helpers';
-import { ILogger } from '@/sanityjs/logging/ilogger';
+import { ILogger } from '@/shared/logging/ilogger';
 
 export type KnownErrorResponseHandler = (res: Response, e: Error, logger: ILogger) => void
 export type KnownErrorResponseBinder = (name: string, handler: KnownErrorResponseHandler) => void;

@@ -7,7 +7,7 @@ import { USER_REPOSITORY } from '../../core/repositories/iuser-repository';
 import { UserRepository } from '../../infrastructure/repositories/user-repository';
 import { USER_VALIDATOR, UserValidator } from '../validators/user-validator';
 import { QUERY_USER_BY_ID_VALIDATOR, QueryUserByIdValidator } from "../validators";
-import { IModelValidator } from '@/sanityjs/http_handlers/imodelvalidator';
+import { IModelValidator } from '@/shared/http_handlers/imodelvalidator';
 import { UPDATE_USER_VALIDATOR, UpdateUserQueryValidator } from '../validators/update-user-query-validator';
 
 export const userModule = new AsyncContainerModule(async (bind: interfaces.Bind, unbind: interfaces.Unbind) => {

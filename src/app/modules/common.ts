@@ -1,11 +1,11 @@
 import { ContainerModule, decorate, injectable, interfaces, inject } from "inversify";
-import { TableRepository } from "@/sanityjs/repository-flavours";
+import { TableRepository } from "@/shared/repository-flavours";
 import { Repository } from "typeorm";
-import { IResponseBuilder, RESPONSE_BUILDER } from '@/sanityjs/http_handlers/iresponse-builder';
-import { ResponseBuilder } from '../../sanityjs/http_handlers/response-builder';
-import { BaseValidator, KnownErrorResponse } from "@/sanityjs/http_handlers";
-import { LOGGER } from "@/sanityjs/logging/ilogger";
-import { bindInjectable } from "@/sanityjs/inversify-injectable";
+import { IResponseBuilder, RESPONSE_BUILDER } from '@/shared/http_handlers/iresponse-builder';
+import { ResponseBuilder } from '../../shared/http_handlers/response-builder';
+import { BaseValidator, KnownErrorResponse } from "@/shared/http_handlers";
+import { LOGGER } from "@/shared/logging/ilogger";
+import { bindInjectable } from "@/shared/inversify-injectable";
 
 export const commonModule = new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind) => {
     decorate(injectable(), TableRepository)

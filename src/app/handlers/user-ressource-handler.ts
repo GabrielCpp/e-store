@@ -6,10 +6,10 @@ import { QUERY_USER_BY_ID_DTO, QueryUserByIdDto } from "../dtos/query-user-id-dt
 import { USER_DOMAIN, UserDomain } from "@/core/domains";
 import { USER_RESSOURCE_USECASE, UserRessourceUsecase } from "@/core/usecases/user-ressource-usecase";
 import { QUERY_USER_BY_ID_DOMAIN, QueryUserByIdDomain } from "@/core/domains/query-user-by-id-domain";
-import { CommandResponseHandlerFactory, HandlerType } from "@/sanityjs/http_handlers/command-response-handler-builder";
-import { MAPPER, IMapper } from '@/sanityjs/mapper/interfaces/imapper';
-import { IModelValidator } from '@/sanityjs/http_handlers/imodelvalidator';
-import { IResponseBuilder, RESPONSE_BUILDER } from "@/sanityjs/http_handlers/iresponse-builder";
+import { CommandResponseHandlerFactory, HandlerType } from "@/shared/http_handlers/command-response-handler-builder";
+import { MAPPER, IMapper } from '@/shared/mapper/interfaces/imapper';
+import { IModelValidator } from '@/shared/http_handlers/imodelvalidator';
+import { IResponseBuilder, RESPONSE_BUILDER } from "@/shared/http_handlers/iresponse-builder";
 import { UpdateUserQueryDto, UPDATE_USER_QUERY_DTO } from "../dtos/update-user-query";
 import { UPDATE_USER_QUERY_DOMAIN, UpdateUserQueryDomain } from "@/core/domains/user-query-domain";
 import { UPDATE_USER_VALIDATOR } from "../validators/update-user-query-validator";

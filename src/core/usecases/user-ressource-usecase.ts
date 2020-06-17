@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { IUserRepository, USER_REPOSITORY } from '../repositories/iuser-repository';
 import { QueryUserByIdDomain } from '../domains/query-user-by-id-domain';
 import { UserDomain } from '../domains';
-import { USER_PRINCIPAL_GUARD, IUserPrincipalGuard } from '../../sanityjs/jwt-token-auth/user-princial-guard';
+import { USER_PRINCIPAL_GUARD, IUserPrincipalGuard } from '../../shared/jwt-token-auth/user-princial-guard';
 
 export const USER_RESSOURCE_USECASE = Symbol.for('UserRessourceUsecase')
 

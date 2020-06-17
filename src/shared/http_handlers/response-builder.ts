@@ -1,7 +1,7 @@
 
 import { IResponseBuilder } from './iresponse-builder';
 import { Response } from 'express';
-import { ILogger } from '@/sanityjs/logging/ilogger';
+import { ILogger } from '@/shared/logging/ilogger';
 import { KnownErrorResponse } from './known-http-error-response';
 
 export class ResponseBuilder implements IResponseBuilder {

@@ -2,11 +2,11 @@ import { EntityRepository, DeleteQueryBuilder, SelectQueryBuilder, UpdateQueryBu
 import { UserDomain, QUERY_USER_BY_ID_DOMAIN } from "@/core/domains";
 import { UserEntity, UserTable } from "../entities";
 import { injectable, inject } from "inversify";
-import { TableRepository, IRepository, FilterBuilder, UpdateFilterBuilder } from "@/sanityjs/repository-flavours";
-import { IMapper, MAPPER } from "@/sanityjs/mapper";
+import { TableRepository, IRepository, FilterBuilder, UpdateFilterBuilder } from "@/shared/repository-flavours";
+import { IMapper, MAPPER } from "@/shared/mapper";
 import { USER_DOMAIN } from '../../core/domains/user-domain';
 import { QueryUserByIdDomain } from '@/core/domains/query-user-by-id-domain';
-import { uuidToBuffer } from "@/sanityjs";
+import { uuidToBuffer } from "@/shared"
 
 @EntityRepository(UserTable)
 export class UserRepository extends TableRepository<UserDomain, UserEntity> implements IRepository<UserDomain>  {

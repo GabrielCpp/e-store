@@ -1,4 +1,4 @@
-import { BaseValidator } from "@/sanityjs/http_handlers/base_validator";
+import { BaseValidator } from "@/shared/http_handlers/base_validator";
 
 export const QUERY_USER_BY_ID_VALIDATOR = Symbol.for('QueryUserByIdValidator')
 

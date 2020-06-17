@@ -1,9 +1,9 @@
 import { ContainerModule, interfaces } from "inversify";
-import { JWT_PUBLIC_KEY, JWT_PRIVATE_KEY, JwtEncoder, IJwtEncoder, JWT_ENCODER, USER_PROVIDER, UserProvider, IUserProvider, JWT_PRIVATE_KEY_PASSPHRASE, JWT_ENCODER_SIGN_OPTIONS } from "@/sanityjs/jwt-token-auth";
-import { bindInjectable } from "@/sanityjs/inversify-injectable";
-import { UserPrincipalGuard, USER_PRINCIPAL_GUARD, IUserPrincipalGuard } from "@/sanityjs/jwt-token-auth/user-princial-guard";
+import { JWT_PUBLIC_KEY, JWT_PRIVATE_KEY, JwtEncoder, IJwtEncoder, JWT_ENCODER, USER_PROVIDER, UserProvider, IUserProvider, JWT_PRIVATE_KEY_PASSPHRASE, JWT_ENCODER_SIGN_OPTIONS } from "@/shared/jwt-token-auth";
+import { bindInjectable } from "@/shared/inversify-injectable";
+import { UserPrincipalGuard, USER_PRINCIPAL_GUARD, IUserPrincipalGuard } from "@/shared/jwt-token-auth/user-princial-guard";
 import { SignOptions } from 'jsonwebtoken';
-import { IJwtDecoder, JWT_DECODER, JwtDecoder } from '../../sanityjs/jwt-token-auth/jwt-decoder';
+import { IJwtDecoder, JWT_DECODER, JwtDecoder } from '../../shared/jwt-token-auth/jwt-decoder';
 import { JwtDecoderMiddleware } from "../middlewares";
 
 

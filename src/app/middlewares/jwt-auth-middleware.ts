@@ -1,9 +1,9 @@
 import express from 'express'
 import { BaseMiddleware } from "inversify-express-utils";
 import { inject, injectable, Container } from 'inversify';
-import { Dictionary } from '../../sanityjs/type-utils';
-import { USER_PROVIDER, IUserProvider, JWT_DECODER, IJwtDecoder, UserPrincipal } from '@/sanityjs/jwt-token-auth';
-import { IResponseBuilder, RESPONSE_BUILDER } from '@/sanityjs';
+import { Dictionary } from '../../shared/type-utils';
+import { USER_PROVIDER, IUserProvider, JWT_DECODER, IJwtDecoder, UserPrincipal } from '@/shared/jwt-token-auth';
+import { IResponseBuilder, RESPONSE_BUILDER } from '@/shared'
 import { CONTAINER } from '../types';
 
 interface TokenPayload {

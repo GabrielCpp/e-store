@@ -1,4 +1,4 @@
-import { BaseValidator } from "@/sanityjs/http_handlers/base_validator";
+import { BaseValidator } from "@/shared/http_handlers/base_validator";
 import { injectable } from "inversify";
 
 export const USER_VALIDATOR = Symbol.for('UserValidator')

@@ -1,5 +1,5 @@
 
-import { buildErrorTemplate } from '@/sanityjs';
+import { buildErrorTemplate } from '@/shared';
 import Ajv from 'ajv'
 
 interface ValidationErrorParameters {
