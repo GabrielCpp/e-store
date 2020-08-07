@@ -101,6 +101,7 @@ function main() {
         `TYPEORM_PORT = 3306`,
         `TYPEORM_SYNCHRONIZE = true`,
         `TYPEORM_LOGGING = false`,
+        'TYPEORM_MIGRATIONS = migrations/*.ts',
         `EXPRESS_PORT = 3000`,
         `EXPRESS_TLS_PRIVATE_KEY = ${expressTls.tlsPrivateKey}`,
         `EXPRESS_TLS_CERTIFICATE = ${expressTls.tlsCertificate}`,
