@@ -9,14 +9,14 @@
     ],
     "scripts": {
         "test": "jest --config jest.config.js --runInBand --no-cache",
-        "build:dev": "yarn run clean && tsc-watch --onSuccess \"node ./dist/index.js\"",
+        "build:dev": "yarn run clean && tsc-watch --onSuccess \"node ./dist/src/index.js\"",
         "build": "yarn run clean && node_modules/.bin/tsc",
         "clean": "rimraf dist",
-        "start": "node dist/index.js",
+        "start": "node --enable-source-maps ./dist/index.js",
         "generate:env": "node ./generate-local-config.js"
     },
     "_moduleAliases": {
-        "@": "./dist"
+        "@": "./dist/src"
     },
     "author": "",
     "license": "ISC",
